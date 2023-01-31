@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val auth : FirebaseAuth = ConfiguracaoFirebase.getFirebaseAuth()
+    private lateinit var autho: FirebaseAuth
     private lateinit var usuario: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        autho = ConfiguracaoFirebase.getFirebaseAuth()
 
         var campoEmail : String = binding.editTextEmailL.text.toString()
         var campoSenha : String = binding.editTextSenhaL.text.toString()
@@ -49,14 +51,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val user : FirebaseUser? = auth.currentUser
+        val user : FirebaseUser? = autho.currentUser
         if (user != null){
             abrirTelaPrincipal()
         }
     }
 
     private fun validarLogin() {
-        auth.signInWithEmailAndPassword(usuario.email, usuario.senha).addOnCompleteListener( OnCompleteListener {
+        autho.signInWithEmailAndPassword(usuario.email, usuario.senha).addOnCompleteListener( OnCompleteListener {
 
             if (it.isSuccessful){
                 abrirTelaPrincipal()

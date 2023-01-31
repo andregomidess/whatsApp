@@ -10,16 +10,12 @@ object ConfiguracaoFirebase {
     private lateinit var auth: FirebaseAuth
 
     fun getFirebaseDatabase() : DatabaseReference{
-        if (database == null){
-            database = FirebaseDatabase.getInstance().reference
-        }
+        database = FirebaseDatabase.getInstance().reference
         return database
     }
 
     fun getFirebaseAuth() : FirebaseAuth{
-        if (auth == null){
-            auth = FirebaseAuth.getInstance()
-        }
+        auth = FirebaseAuth.getInstance()
         return auth
     }
 }
