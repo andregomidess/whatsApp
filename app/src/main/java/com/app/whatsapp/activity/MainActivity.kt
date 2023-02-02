@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.app.whatsapp.databinding.ActivityMainBinding
-import com.app.whatsapp.helper.ConfiguracaoFirebase
+import com.app.whatsapp.config.ConfiguracaoFirebase
 import com.app.whatsapp.model.Usuario
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth

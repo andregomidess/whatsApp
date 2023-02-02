@@ -2,13 +2,13 @@ package com.app.whatsapp.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.app.whatsapp.R
 import com.app.whatsapp.databinding.ActivityCadastroBinding
-import com.app.whatsapp.helper.ConfiguracaoFirebase
+import com.app.whatsapp.config.ConfiguracaoFirebase
+import com.app.whatsapp.helper.Base64Custom
 import com.app.whatsapp.model.Usuario
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 
 class CadastroActivity : AppCompatActivity() {
@@ -29,7 +29,16 @@ class CadastroActivity : AppCompatActivity() {
         autenticacao = ConfiguracaoFirebase.getFirebaseAuth()
         autenticacao.createUserWithEmailAndPassword(usuario.email, usuario.senha).addOnCompleteListener(this){ task ->
             if (task.isSuccessful){
+                try {
+                    val idUsuario: String = Base64Custom.codificarString(usuario.email)
+                    usuario.uid = idUsuario
+                    usuario.salvar()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
                 Toast.makeText(this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
+                finish()
             }else{
                 var excecao = "";
                 try{

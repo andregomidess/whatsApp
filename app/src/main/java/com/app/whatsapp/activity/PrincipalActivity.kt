@@ -11,7 +11,7 @@ import com.app.whatsapp.R
 import com.app.whatsapp.databinding.ActivityPrincipalBinding
 import com.app.whatsapp.fragments.ContatosFragment
 import com.app.whatsapp.fragments.ConversasFragment
-import com.app.whatsapp.helper.ConfiguracaoFirebase
+import com.app.whatsapp.config.ConfiguracaoFirebase
 import com.google.firebase.auth.FirebaseAuth
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
