@@ -12,12 +12,20 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import com.app.whatsapp.config.ConfiguracaoFirebase
 import com.app.whatsapp.databinding.ActivityConfiguracoesBinding
+import com.app.whatsapp.helper.Base64Custom
 import com.app.whatsapp.helper.Permissao
+import com.app.whatsapp.helper.UsuarioFirebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.ByteArrayOutputStream
 import java.util.BitSet
 
 class ConfiguracoesActivity : AppCompatActivity() {
@@ -26,6 +34,8 @@ class ConfiguracoesActivity : AppCompatActivity() {
     private val permissoesNecessarias = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
     private final val SELECAO_CAMERA: Int = 100
     private final val SELECAO_GALERIA: Int = 200
+    private lateinit var storageReference: StorageReference
+    private lateinit var identificadorUsuario: String
 
     @SuppressLint("QueryPermissionsNeeded")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +43,9 @@ class ConfiguracoesActivity : AppCompatActivity() {
         binding = ActivityConfiguracoesBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        storageReference = ConfiguracaoFirebase.getFirebaseStorage()
+        identificadorUsuario = UsuarioFirebase.getIdUsuario()
 
         Permissao.validaPermissao(permissoesNecessarias, this, 1)
 
@@ -82,6 +95,25 @@ class ConfiguracoesActivity : AppCompatActivity() {
                 }
                 if (imagem != null){
                     binding.circleImagePhotoPerfil.setImageBitmap(imagem)
+
+                    //Recuperar dados da img
+                    val baos: ByteArrayOutputStream = ByteArrayOutputStream()
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos)
+                    val dadosImg: ByteArray = baos.toByteArray()
+
+                    val imagemRef : StorageReference = storageReference
+                        .child("imagens")
+                        .child("perfil")
+                        .child("")
+                        .child("perfil.jpeg")
+
+                    val uploadTask: UploadTask = imagemRef.putBytes(dadosImg)
+                    uploadTask.addOnFailureListener {
+                        Toast.makeText(this, "Erro ao fazer upload da imagem!", Toast.LENGTH_SHORT).show()
+                    }.addOnSuccessListener {
+                        Toast.makeText(this, "Sucesso ao fazer upload da imagem!", Toast.LENGTH_SHORT).show()
+
+                    }
                 }
             }catch (e: Exception){
                 e.printStackTrace()
