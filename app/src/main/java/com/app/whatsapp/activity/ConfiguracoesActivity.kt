@@ -104,8 +104,7 @@ class ConfiguracoesActivity : AppCompatActivity() {
                     val imagemRef : StorageReference = storageReference
                         .child("imagens")
                         .child("perfil")
-                        .child("")
-                        .child("perfil.jpeg")
+                        .child("$identificadorUsuario.jpeg")
 
                     val uploadTask: UploadTask = imagemRef.putBytes(dadosImg)
                     uploadTask.addOnFailureListener {
