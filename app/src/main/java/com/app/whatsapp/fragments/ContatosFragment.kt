@@ -38,7 +38,7 @@ class ContatosFragment : Fragment() {
         //configs iniciais
         recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos)
 
-        usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios")
+        usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuario")
 
 
         //config adapter

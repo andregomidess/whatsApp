@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         autho = ConfiguracaoFirebase.getFirebaseAuth()
 
-        var campoEmail : String = binding.editTextEmailL.text.toString()
-        var campoSenha : String = binding.editTextSenhaL.text.toString()
+        val campoEmail : String = binding.editTextEmailL.text.toString()
+        val campoSenha : String = binding.editTextSenhaL.text.toString()
 
         binding.buttonLogar.setOnClickListener {
-            if (campoEmail.isEmpty()){
-                if (campoSenha.isEmpty()){
+            if (!campoEmail.isEmpty()){
+                if (!campoSenha.isEmpty()){
                     usuario = Usuario()
                     usuario.email = campoEmail
                     usuario.senha = campoSenha

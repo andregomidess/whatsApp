@@ -32,20 +32,16 @@ class ContatosAdapter(private val listaContatos: ArrayList<Usuario>, private val
     }
 
     override fun onBindViewHolder(holder: MyviewHolder, position: Int) {
+        holder.foto.setImageResource(R.drawable.padrao)
         val usuario = contatos[position]
         holder.nome.text = usuario.nome
         holder.email.text = usuario.email
-        if (usuario.foto.isEmpty()){
             val uri: Uri = Uri.parse(usuario.foto)
             if (context != null) {
                 Glide.with(context).load(uri).into(holder.foto)
-
             }else{
                 holder.foto.setImageResource(R.drawable.padrao)
             }
-        }
-
-
     }
 
     override fun getItemCount(): Int {

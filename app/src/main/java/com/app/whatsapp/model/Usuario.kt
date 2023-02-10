@@ -33,7 +33,7 @@ class Usuario() {
     fun atualizar(){
         val identificadorUSusario: String = UsuarioFirebase.getIdUsuario()
         val database : DatabaseReference = ConfiguracaoFirebase.getFirebaseDatabase()
-        val usuariosRef: DatabaseReference = database.child("usuarios").child(identificadorUSusario)
+        val usuariosRef: DatabaseReference = database.child("usuario").child(identificadorUSusario)
 
         val valorUsuario: MutableMap<String, Any> = converterParaMap()
         usuariosRef.updateChildren(valorUsuario)
