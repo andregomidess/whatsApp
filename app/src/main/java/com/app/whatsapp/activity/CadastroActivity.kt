@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.app.whatsapp.databinding.ActivityCadastroBinding
 import com.app.whatsapp.config.ConfiguracaoFirebase
 import com.app.whatsapp.helper.Base64Custom
+import com.app.whatsapp.helper.UsuarioFirebase
 import com.app.whatsapp.model.Usuario
 import com.google.firebase.auth.*
 
@@ -38,6 +39,7 @@ class CadastroActivity : AppCompatActivity() {
                 }
 
                 Toast.makeText(this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
+                UsuarioFirebase.atualizarNomeUsuario(usuario.nome)
                 finish()
             }else{
                 var excecao = "";
