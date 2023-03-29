@@ -3,7 +3,9 @@ package com.app.whatsapp.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.app.whatsapp.databinding.ActivityMainBinding
 import com.app.whatsapp.config.ConfiguracaoFirebase
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var autho: FirebaseAuth
     private lateinit var usuario: Usuario
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -28,15 +32,14 @@ class MainActivity : AppCompatActivity() {
 
         autho = ConfiguracaoFirebase.getFirebaseAuth()
 
-        val campoEmail : String = binding.editTextEmailL.text.toString()
-        val campoSenha : String = binding.editTextSenhaL.text.toString()
+
 
         binding.buttonLogar.setOnClickListener {
-            if (!campoEmail.isEmpty()){
-                if (!campoSenha.isEmpty()){
+            if (binding.editTextEmailL.text.toString().isNotEmpty()){
+                if (binding.editTextSenhaL.text.toString().isNotEmpty()){
                     usuario = Usuario()
-                    usuario.email = campoEmail
-                    usuario.senha = campoSenha
+                    usuario.email = binding.editTextEmailL.text.toString()
+                    usuario.senha = binding.editTextSenhaL.text.toString()
                     validarLogin()
                 }else{
                     Toast.makeText(this, "Digite a senha!", Toast.LENGTH_SHORT).show()

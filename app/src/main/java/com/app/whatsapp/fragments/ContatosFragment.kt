@@ -1,5 +1,6 @@
 package com.app.whatsapp.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -67,7 +68,9 @@ class ContatosFragment : Fragment() {
 
     private fun recuperarContatos(){
         valueEventListenerContatos =  usuarioRef.addValueEventListener(object: ValueEventListener{
+            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
+                listaContatos.clear()
                 for (dados: DataSnapshot in snapshot.children){
                     val usuario = dados.getValue(Usuario::class.java)
                     if (usuario != null) {
