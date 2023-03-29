@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         autho = ConfiguracaoFirebase.getFirebaseAuth()
 
 
-
+        //teste
         binding.buttonLogar.setOnClickListener {
             if (binding.editTextEmailL.text.toString().isNotEmpty()){
                 if (binding.editTextSenhaL.text.toString().isNotEmpty()){
