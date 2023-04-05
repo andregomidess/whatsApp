@@ -27,8 +27,8 @@
             android:parentActivityName=".activity.PrincipalActivity"
             android:theme="@style/Theme.WhatsApp.NoActionBar">
             <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.whatsapp.activity.PrincipalActivity" />
         </activity>
         <activity
             android:name=".activity.ConfiguracoesActivity"
