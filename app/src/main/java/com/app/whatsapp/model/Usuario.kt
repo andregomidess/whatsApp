@@ -8,7 +8,7 @@ import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Objects
 
-class Usuario() {
+class Usuario() : java.io.Serializable{
 
     @set:Exclude @get:Exclude
     var uid: String = ""

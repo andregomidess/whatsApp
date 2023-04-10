@@ -36,7 +36,7 @@
             android:paddingRight="16dp">
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/editMensagem"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -52,15 +52,15 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/fabEnviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="enviar mensagem"
+            android:onClick="enviarMensagem"
+            android:tint="@color/white"
             app:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
-            app:srcCompat="@drawable/ic_enviar_branco_24"
-            android:tint="@color/white">
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+            app:srcCompat="@drawable/ic_enviar_branco_24"></com.google.android.material.floatingactionbutton.FloatingActionButton>
     </LinearLayout>
 </LinearLayout>

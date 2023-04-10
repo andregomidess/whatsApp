@@ -1,5 +1,6 @@
 package com.app.whatsapp.activity
 
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,8 @@ import com.app.whatsapp.helper.Base64Custom
 import com.app.whatsapp.helper.UsuarioFirebase
 import com.app.whatsapp.model.Usuario
 import com.google.firebase.auth.*
+import java.io.File
+import java.io.FileInputStream
 
 class CadastroActivity : AppCompatActivity() {
 
