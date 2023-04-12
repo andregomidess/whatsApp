@@ -2,6 +2,7 @@ package com.app.whatsapp.activity
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -80,6 +81,7 @@ class ChatActivity : AppCompatActivity() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.contentChat.recyclerMensagens.layoutManager = layoutManager
         binding.contentChat.recyclerMensagens.setHasFixedSize(true)
+        binding.contentChat.recyclerMensagens.recycledViewPool.setMaxRecycledViews(0,0);
         binding.contentChat.recyclerMensagens.adapter = adapter
 
         database = ConfiguracaoFirebase.getFirebaseDatabase()
@@ -120,8 +122,12 @@ class ChatActivity : AppCompatActivity() {
 
     fun salvarMensagem(idRemetente: String, idDestinatario: String, mensagem: Mensagem){
         val database: DatabaseReference = ConfiguracaoFirebase.getFirebaseDatabase()
+        val mensagemRef = database.child("mensagens")
 
-        mensagensRef.push().setValue(mensagem)
+        mensagemRef.child(idRemetente)
+            .child(idDestinatario)
+            .push()
+            .setValue(mensagem);
         //Limpar texto
         binding.contentChat.editMensagem.text.clear()
     }
@@ -130,10 +136,9 @@ class ChatActivity : AppCompatActivity() {
         childEventListenerMensagens = mensagensRef.addChildEventListener(object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val mensagem: Mensagem? = snapshot.getValue(Mensagem::class.java)
-                if (mensagem != null) {
-                    mensagens.add(mensagem)
-                    adapter.notifyDataSetChanged()
-                }
+                mensagens.add(mensagem!!)
+                adapter.notifyDataSetChanged()
+
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

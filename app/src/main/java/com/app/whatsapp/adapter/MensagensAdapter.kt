@@ -42,7 +42,7 @@ class MensagensAdapter(lista: List<Mensagem>, c: android.content.Context) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val mensagem: Mensagem = mensagens[position]
         val msg = mensagem.mensagem
-        val imagem = mensagem.mensagem
+        val imagem = mensagem.imagem
         if (imagem != ""){
             val url: Uri = Uri.parse(imagem)
             Glide.with(context).load(url).into(holder.imagem)
@@ -65,8 +65,9 @@ class MensagensAdapter(lista: List<Mensagem>, c: android.content.Context) :
         val mensagem: Mensagem = mensagens[position]
 
         val idUsuario: String = UsuarioFirebase.getIdUsuario()
-        if(idUsuario == mensagem.idUsuario)
+        if(idUsuario == mensagem.idUsuario){
             return TIPO_REMETENTE
+        }
         return TIPO_DESTINATARIO
     }
 
