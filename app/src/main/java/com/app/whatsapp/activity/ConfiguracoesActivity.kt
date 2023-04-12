@@ -131,7 +131,7 @@ class ConfiguracoesActivity : AppCompatActivity() {
                 if (imagem != null){
                     binding.circleImagePhotoPerfil.setImageBitmap(imagem)
 
-                    //Recuperar dados da img
+                    //Recuperar dados da img para o firebase
                     val baos: ByteArrayOutputStream = ByteArrayOutputStream()
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos)
                     val dadosImg: ByteArray = baos.toByteArray()

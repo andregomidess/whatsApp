@@ -1,7 +1,12 @@
 package com.app.whatsapp.activity
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -20,10 +25,15 @@ import com.app.whatsapp.helper.UsuarioFirebase
 import com.app.whatsapp.model.Mensagem
 import com.app.whatsapp.model.Usuario
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
+import java.util.UUID
 
 
 class ChatActivity : AppCompatActivity() {
@@ -33,6 +43,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var usuarioDestinatario: Usuario
     private lateinit var adapter: MensagensAdapter
     private lateinit var childEventListenerMensagens: ChildEventListener
+    private lateinit var storage: StorageReference
 
     //id usuarios remetente e destinatario
     private lateinit var idUsuarioRemetente: String
@@ -41,6 +52,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var mensagensRef: DatabaseReference
 
     private lateinit var database: DatabaseReference
+    companion object{
+        val SELECAO_CAMERA: Int = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +103,67 @@ class ChatActivity : AppCompatActivity() {
             .child(idUsuarioRemetente)
             .child(idUsuarioDestinatario)
 
+        storage = ConfiguracaoFirebase.getFirebaseStorage()
 
+        //Evento de clique na camera
+        binding.contentChat.imageCamera.setOnClickListener {
+            val i: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if(i.resolveActivity(packageManager) != null){
+                startActivityForResult(i, SELECAO_CAMERA)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK){
+            var imagem: Bitmap? = null
+            try {
+                when (requestCode) {
+                    SELECAO_CAMERA -> {
+                        if (data != null) {
+                            imagem = data.extras?.get("data") as Bitmap?
+                        }
+                    }
+                }
+                if (imagem != null){
+                    //Recuperar dados da img para o firebase
+                    val baos: ByteArrayOutputStream = ByteArrayOutputStream()
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos)
+                    val dadosImg: ByteArray = baos.toByteArray()
+
+                    //criar nome da imagem
+                    val nomeImagem: String = UUID.randomUUID().toString()
+
+                    //config referencias do firebase
+                    val imagemRef: StorageReference = storage.child("imagens")
+                        .child("fotos")
+                        .child(idUsuarioRemetente)
+                        .child(nomeImagem)
+                    val uploadTask = imagemRef.putBytes(dadosImg)
+                    uploadTask.addOnFailureListener {
+                        Log.d("Erro", "Erro ao fazer upload")
+                        Toast.makeText(this, "Erro ao fazer upload da imagem!", Toast.LENGTH_SHORT).show()
+                    }.addOnSuccessListener {
+                        imagemRef.downloadUrl.addOnCompleteListener {
+                            val downloadUrl = it.result
+                            val mensagem: Mensagem = Mensagem()
+                            mensagem.idUsuario = idUsuarioRemetente
+                            mensagem.mensagem = "imagem.jpeg"
+                            mensagem.imagem = downloadUrl.toString()
+
+                            salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem)
+
+                            salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem)
+                            Toast.makeText(this, "Sucesso ao enviar a imagem!", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onStart() {
