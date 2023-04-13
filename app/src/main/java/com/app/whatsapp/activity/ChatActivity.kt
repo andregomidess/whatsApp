@@ -2,9 +2,7 @@ package com.app.whatsapp.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -22,16 +20,15 @@ import com.app.whatsapp.config.ConfiguracaoFirebase
 import com.app.whatsapp.databinding.ActivityChatBinding
 import com.app.whatsapp.helper.Base64Custom
 import com.app.whatsapp.helper.UsuarioFirebase
+import com.app.whatsapp.model.Conversa
 import com.app.whatsapp.model.Mensagem
 import com.app.whatsapp.model.Usuario
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
@@ -188,10 +185,23 @@ class ChatActivity : AppCompatActivity() {
 
             //salvar mensagem para o destinatario
             salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem)
+
+            //salvar conversa
+            salvarConversa(mensagem)
         }else{
             Toast.makeText(this@ChatActivity, "Digite uma mensagem para enviar!",
                 Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun salvarConversa(msg: Mensagem) {
+        val conversaRemetente: Conversa = Conversa()
+        conversaRemetente.idRemetente = idUsuarioRemetente
+        conversaRemetente.idDestinatario = idUsuarioDestinatario
+        conversaRemetente.ultimaMensagem = msg.mensagem
+        conversaRemetente.usuarioExibicao = usuarioDestinatario
+
+        conversaRemetente.salvar()
     }
 
     fun salvarMensagem(idRemetente: String, idDestinatario: String, mensagem: Mensagem){
