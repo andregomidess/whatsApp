@@ -217,6 +217,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun recuperarMensagens(){
+        mensagens.clear()
         childEventListenerMensagens = mensagensRef.addChildEventListener(object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val mensagem: Mensagem? = snapshot.getValue(Mensagem::class.java)

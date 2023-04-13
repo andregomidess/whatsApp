@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 
-class RecyclerItemClickListener(
+open class RecyclerItemClickListener(
     context: Context?,
     recyclerView: RecyclerView,
     private val mListener: OnItemClickListener?

@@ -9,7 +9,7 @@ class Conversa {
     var ultimaMensagem: String = ""
     var usuarioExibicao: Usuario? = null
 
-    public fun salvar(){
+    fun salvar(){
         val database: DatabaseReference = ConfiguracaoFirebase.getFirebaseDatabase()
         val conversaRef: DatabaseReference = database.child("conversas")
         conversaRef.child(this.idRemetente)
